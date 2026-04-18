@@ -1,0 +1,400 @@
+{
+	"info": {
+		"_postman_id": "fila-api-collection-2026",
+		"name": "API de Fila da Vida Real",
+		"description": "Collection completa da API REST para gerenciamento de filas de atendimento (Banco, Hospital, Restaurante)\n\n**Desenvolvido para:** Trabalho Final - Programação Web 2\n\n**Funcionalidades:**\n- Gerenciamento completo de pessoas na fila\n- Sistema de priorização (NORMAL, PRIORITARIO)\n- Paginação\n- Cache\n- Validações\n- Tratamento de erros personalizado\n\n**Base URL:** http://localhost:8080\n\n**Autor:** Equipe do Trabalho Final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Adicionar Pessoa na Fila",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"João Silva\",\n  \"tipoAtendimento\": \"NORMAL\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fila",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila"
+					]
+				},
+				"description": "Adiciona uma nova pessoa na fila.\n\n**Validações:**\n- `nome`: obrigatório, não pode ser vazio\n- `tipoAtendimento`: obrigatório, deve ser NORMAL ou PRIORITARIO\n\n**Resposta:** 201 Created com os dados da pessoa criada"
+			},
+			"response": []
+		},
+		{
+			"name": "1.1. Adicionar Pessoa PRIORITÁRIA",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"Maria Santos (Idosa)\",\n  \"tipoAtendimento\": \"PRIORITARIO\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fila",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila"
+					]
+				},
+				"description": "Adiciona uma pessoa com atendimento PRIORITÁRIO.\n\nPessoas prioritárias são atendidas antes das normais, independente da ordem de chegada."
+			},
+			"response": []
+		},
+		{
+			"name": "2. Listar Todas as Pessoas (Paginado)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fila?pagina=0&tamanho=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila"
+					],
+					"query": [
+						{
+							"key": "pagina",
+							"value": "0",
+							"description": "Número da página (começa em 0)"
+						},
+						{
+							"key": "tamanho",
+							"value": "10",
+							"description": "Quantidade de itens por página"
+						}
+					]
+				},
+				"description": "Lista todas as pessoas da fila com paginação.\n\n**Parâmetros:**\n- `pagina`: número da página (padrão: 0)\n- `tamanho`: itens por página (padrão: 10)\n\n**Resposta inclui:**\n- totalPaginas\n- totalElementos\n- quantidadeItensPorPagina\n- pagina atual\n- lista de pessoas\n\n**Cache:** Esta requisição está em cache"
+			},
+			"response": []
+		},
+		{
+			"name": "3. Listar Pessoas Aguardando (com posição)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fila/aguardando?pagina=0&tamanho=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila",
+						"aguardando"
+					],
+					"query": [
+						{
+							"key": "pagina",
+							"value": "0"
+						},
+						{
+							"key": "tamanho",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Lista apenas pessoas com status AGUARDANDO e mostra a posição de cada uma na fila.\n\n**Diferença do endpoint anterior:**\n- Filtra apenas status AGUARDANDO\n- Retorna campo `posicaoNaFila`\n- Ordenado por prioridade e hora de entrada"
+			},
+			"response": []
+		},
+		{
+			"name": "4. Buscar Pessoa por ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fila/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila",
+						"1"
+					]
+				},
+				"description": "Busca uma pessoa específica pelo ID.\n\n**Possíveis respostas:**\n- 200 OK: pessoa encontrada\n- 404 Not Found: pessoa não existe\n\n**Cache:** Esta requisição está em cache"
+			},
+			"response": []
+		},
+		{
+			"name": "5. Atualizar Pessoa",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"João da Silva (Atualizado)\",\n  \"tipoAtendimento\": \"PRIORITARIO\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fila/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila",
+						"1"
+					]
+				},
+				"description": "Atualiza os dados de uma pessoa na fila.\n\n**Regras:**\n- Não pode atualizar pessoa com status ATENDIDO\n- `nome` e `tipoAtendimento` são obrigatórios\n\n**Possíveis respostas:**\n- 200 OK: atualizado com sucesso\n- 400 Bad Request: pessoa já foi atendida\n- 404 Not Found: pessoa não encontrada\n\n**Cache:** Limpa todos os caches após atualização"
+			},
+			"response": []
+		},
+		{
+			"name": "6. Remover Pessoa da Fila",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fila/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila",
+						"1"
+					]
+				},
+				"description": "Remove uma pessoa da fila (soft delete ou hard delete).\n\n**Possíveis respostas:**\n- 204 No Content: removido com sucesso\n- 404 Not Found: pessoa não encontrada\n\n**Cache:** Limpa todos os caches após remoção"
+			},
+			"response": []
+		},
+		{
+			"name": "7. Atender Próxima Pessoa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fila/atender",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila",
+						"atender"
+					]
+				},
+				"description": "Atende automaticamente a próxima pessoa da fila.\n\n**Lógica de priorização:**\n1. Pessoas com PRIORITARIO são atendidas primeiro\n2. Em caso de empate, usa ordem de chegada (horaEntrada)\n\n**Ação:**\n- Muda status de AGUARDANDO para ATENDIDO\n- Retorna os dados da pessoa atendida\n\n**Possíveis respostas:**\n- 200 OK: pessoa atendida com sucesso\n- 400 Bad Request: fila vazia (ninguém aguardando)\n\n**Cache:** Limpa todos os caches"
+			},
+			"response": []
+		},
+		{
+			"name": "8. Obter Estatísticas da Fila",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fila/estatisticas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila",
+						"estatisticas"
+					]
+				},
+				"description": "Retorna estatísticas gerais da fila.\n\n**Retorna:**\n- totalAguardando: quantidade de pessoas aguardando\n- totalAtendidos: quantidade de pessoas atendidas\n- totalCancelados: quantidade de pessoas canceladas\n- totalGeral: total de registros\n\n**Cache:** Esta requisição está em cache"
+			},
+			"response": []
+		},
+		{
+			"name": "9. TESTE - Validação Nome Vazio (ERRO)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"\",\n  \"tipoAtendimento\": \"NORMAL\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fila",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila"
+					]
+				},
+				"description": "**TESTE DE VALIDAÇÃO**\n\nEsta requisição deve retornar ERRO 400.\n\n**Erro esperado:**\n- Campo `nome` está vazio\n- Bean Validation deve rejeitar\n\n**Demonstra:** Sistema de validação com @Valid e @NotBlank funcionando"
+			},
+			"response": []
+		},
+		{
+			"name": "10. TESTE - TipoAtendimento Null (ERRO)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"Teste Validação\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fila",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila"
+					]
+				},
+				"description": "**TESTE DE VALIDAÇÃO**\n\nEsta requisição deve retornar ERRO 400.\n\n**Erro esperado:**\n- Campo `tipoAtendimento` está ausente (null)\n- Bean Validation deve rejeitar\n\n**Demonstra:** Sistema de validação com @NotNull funcionando"
+			},
+			"response": []
+		},
+		{
+			"name": "11. TESTE - Pessoa Não Encontrada (ERRO)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/fila/999",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila",
+						"999"
+					]
+				},
+				"description": "**TESTE DE EXCEPTION HANDLER**\n\nEsta requisição deve retornar ERRO 404.\n\n**Erro esperado:**\n- Pessoa com ID 999 não existe\n- PessoaNaoEncontradaException lançada\n- GlobalExceptionHandler trata e retorna erro personalizado\n\n**Demonstra:** Sistema de tratamento de erros com @ControllerAdvice"
+			},
+			"response": []
+		},
+		{
+			"name": "12. TESTE - Atualizar Pessoa Atendida (ERRO)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"nome\": \"Tentando Atualizar\",\n  \"tipoAtendimento\": \"NORMAL\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/fila/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"fila",
+						"6"
+					]
+				},
+				"description": "**TESTE DE REGRA DE NEGÓCIO**\n\nEsta requisição deve retornar ERRO 400.\n\n**Erro esperado:**\n- Pessoa ID 6 já foi ATENDIDA (veja data.sql)\n- PessoaJaAtendidaException lançada\n- Não é permitido modificar pessoa atendida\n\n**Demonstra:** Validações de regras de negócio"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "apiPath",
+			"value": "/api/fila",
+			"type": "string"
+		}
+	]
+}
+

@@ -1,0 +1,10 @@
+INSERT INTO pessoa_na_fila (nome, tipo_atendimento, hora_entrada, status) VALUES ('Carlos Eduardo', 'NORMAL', DATEADD('MINUTE', -30, CURRENT_TIMESTAMP), 'AGUARDANDO');
+INSERT INTO pessoa_na_fila (nome, tipo_atendimento, hora_entrada, status) VALUES ('Ana Paula Santos', 'NORMAL', DATEADD('MINUTE', -25, CURRENT_TIMESTAMP), 'AGUARDANDO');
+INSERT INTO pessoa_na_fila (nome, tipo_atendimento, hora_entrada, status) VALUES ('Pedro Henrique', 'NORMAL', DATEADD('MINUTE', -15, CURRENT_TIMESTAMP), 'AGUARDANDO');
+INSERT INTO pessoa_na_fila (nome, tipo_atendimento, hora_entrada, status) VALUES ('Maria da Conceição', 'PRIORITARIO', DATEADD('MINUTE', -20, CURRENT_TIMESTAMP), 'AGUARDANDO');
+INSERT INTO pessoa_na_fila (nome, tipo_atendimento, hora_entrada, status) VALUES ('José Silva (Idoso)', 'PRIORITARIO', DATEADD('MINUTE', -10, CURRENT_TIMESTAMP), 'AGUARDANDO');
+INSERT INTO pessoa_na_fila (nome, tipo_atendimento, hora_entrada, status) VALUES ('Roberto Lima', 'NORMAL', DATEADD('MINUTE', -60, CURRENT_TIMESTAMP), 'ATENDIDO');
+INSERT INTO pessoa_na_fila (nome, tipo_atendimento, hora_entrada, status) VALUES ('Francisca Santos', 'PRIORITARIO', DATEADD('MINUTE', -55, CURRENT_TIMESTAMP), 'ATENDIDO');
+INSERT INTO pessoa_na_fila (nome, tipo_atendimento, hora_entrada, status) VALUES ('João Pedro', 'NORMAL', DATEADD('MINUTE', -50, CURRENT_TIMESTAMP), 'ATENDIDO');
+INSERT INTO pessoa_na_fila (nome, tipo_atendimento, hora_entrada, status) VALUES ('Lucas Souza', 'NORMAL', DATEADD('MINUTE', -45, CURRENT_TIMESTAMP), 'CANCELADO');
+INSERT INTO pessoa_na_fila (nome, tipo_atendimento, hora_entrada, status) VALUES ('Juliana Costa', 'NORMAL', DATEADD('MINUTE', -40, CURRENT_TIMESTAMP), 'CANCELADO');
